@@ -18,8 +18,12 @@ var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
 // External dependencies you do not want to rebundle while developing,
 // but include in your application deployment
 var dependencies = [
-	'react',
-  'react-addons'
+	//'react',
+  //'react-addons'
+];
+
+var externalLib=[
+	'./node_modules/react/dist/react.min.js'
 ];
 
 var browserifyTask = function (options) {
@@ -148,17 +152,26 @@ var cssTask = function (options) {
 // Starts our development workflow
 gulp.task('default', function () {
 
+//	gulp.src(externalLib)
+//		.pipe(gulp.dest('./assets/js/external'));
+
+	//gulp.src('./app/main.js')
+  //    .pipe(browserify({transform: 'reactify'}))
+  //    .pipe(concat('main.js'))
+  //    .pipe(gulp.dest('./assets/js/build'));
   browserifyTask({
     development: true,
     src: './app/main.js',
-    dest: './build'
+    dest: './assets/js/build'
   });
 
-  cssTask({
+cssTask({
     development: true,
     src: './styles/**/*.css',
     dest: './build'
   });
+
+	gulp.watch(['api/**/*.*','assets/styles/**/*.*','config/**/*.*','view/**/*.*'], ['default']);
 
 });
 
@@ -180,4 +193,11 @@ gulp.task('deploy', function () {
 
 gulp.task('test', function () {
     return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+});
+
+gulp.task('browserify', function() {
+    gulp.src('src/js/main.js')
+      .pipe(browserify({transform: 'reactify'}))
+      .pipe(concat('main.js'))
+      .pipe(gulp.dest('dist/js'));
 });

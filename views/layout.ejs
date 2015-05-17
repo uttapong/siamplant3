@@ -1,7 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>New Sails App</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+<meta property="og:image" content="images/teebadgun_logo_128.png" />
+<meta property="og:url" content="{{Request::url()}}" />
+<meta property="og:title" content="siamplant ซื้อต้นไม้ ขายต้นไม้ ง่าย ได้เงินไว" />
+<meta property="og:description" content="ตลาดต้นไม้ ออนไลน์ ที่ง่ายและได้เงินไวที่สุด" />
+
+<meta property="og:locale" content="th_TH" />
+
+
+    <link rel="icon" href="{{ asset('assets/images/siamplant_ico.png">
+
+    <title>ตลาดต้นไม้ siamplant</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -29,12 +45,210 @@
     -->
 
     <!--STYLES-->
+    <link rel="stylesheet" href="/styles/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap-formhelpers.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap.css">
+    <link rel="stylesheet" href="/styles/core.css">
+    <link rel="stylesheet" href="/styles/datepicker.css">
+    <link rel="stylesheet" href="/styles/dropzone.css">
+    <link rel="stylesheet" href="/styles/font-awesome.css">
+    <link rel="stylesheet" href="/styles/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/siamplant.css">
     <!--STYLES END-->
+
+    <script>
+      window.fbAsyncInit = function() {
+        // init the FB JS SDK
+        FB.init({
+          appId      : '612396988819496',                        // App ID from the app dashboard
+          status     : true,                                 // Check Facebook Login status
+          xfbml      : true,                                  // Look for social plugins on the page
+          cookie  :true
+        });
+
+        // Additional initialization code such as adding Event Listeners goes here
+      };
+
+      // Load the SDK asynchronously
+      (function(){
+         // If we've already installed the SDK, we're done
+         if (document.getElementById('facebook-jssdk')) {return;}
+
+         // Get the first script element, which we'll use to find the parent node
+         var firstScriptElement = document.getElementsByTagName('script')[0];
+
+         // Create a new script element and set its id
+         var facebookJS = document.createElement('script');
+         facebookJS.id = 'facebook-jssdk';
+
+         // Set the new script's source to the source of the Facebook JS SDK
+         facebookJS.src = '//connect.facebook.net/en_US/all.js';
+
+         // Insert the Facebook JS SDK into the DOM
+         firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
+       }());
+    function loginFB(){
+      FB.login(function(response) {
+       if (response.authResponse) {
+         console.log('กำลังดึงข้อมูลจาก Facebook');
+         FB.api('/me', function(response) {
+           location.href='fbsignin';
+         });
+       } else {
+         console.log('User cancelled login or did not fully authorize.');
+         location.href='home';
+       }
+      // location.href='home';
+     },{scope: 'email,publish_actions,publish_stream'});
+
+    }
+
+    function connectFB(){
+      FB.login(function(response) {
+       if (response.authResponse) {
+         console.log('กำลังดึงข้อมูลจาก Facebook');
+         FB.api('/me', function(response) {
+           location.href='fbconnect';
+         });
+       } else {
+         console.log('User cancelled login or did not fully authorize.');
+         location.href='home';
+       }
+      // location.href='home';
+     },{scope: 'email,publish_actions,publish_stream'});
+    }
+
+
+    function showBadge(id,name,desc){
+
+      var content="<div class='userbadge'>"+
+      "<img src='home/assets/images/badge/"+id+".png' />"+
+      "<h2>ขอแสดงความยินดีคุณได้รับเหรียญ '"+name+"'</h2>"+
+      "<p>"+desc+"</p>"+
+      "</div>";
+      bootbox.alert(content, function() {
+      });
+    }
+    function inviteFriends(){
+      /*FB.ui({method: 'apprequests',
+            message: 'มาเข้าร่วมสังคมนักกีฬาแบดมินตันที่คุณเป็นเจ้าของกันเถอะ'
+        }, function(request,to){
+
+          console.log(to);
+
+        });*/
+
+
+
+        FB.ui({
+            method: 'send',
+            message: 'มาช๊อปต้นไม้แบบง่ายๆ กันเถอะ',
+           // filters: ['app_non_users'],
+           link: 'http://www.siamplant.com',
+            title: 'ส่งคำเขิญหาเพื่อนของคุณ'
+        });
+
+
+    }
+
+    </script>
   </head>
 
   <body>
-    <%- body %>
+
+    <div class="header">
+          <div class="bar">
+          <a class="logo" href="home"><img src="images/siamplant_logo.png"/></a>
+          <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="home">หน้าแรก <span class="sr-only">(current)</span></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">หมวดหมู่ <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">แคคตัส และไม้อวบน้ำ</a></li>
+              <li><a href="#">ทิลแอนเซีย</a></li>
+              <li><a href="#">กล้วยไม้</a></li>
+              <li><a href="#">ต้นไม้อื่นๆ</a></li>
+              <li class="divider"></li>
+              <li><a href="#">อุปกรณ์</a></li>
+              <li><a href="#">วัสดุปลูก</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="ค้นหา">
+          </div>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+
+          <li><a href="newitem"><i class="fa fa-plus fa-lg"></i> ลงประกาศ </a> </li>
+          <li><a href="{{route('cart')}}">ตะกร้า <span class="badge @if(Auth::user()->getcartcount()>0) progress-bar-success @endif">cart count</span></a></li>
+          <li><a href="{{route('order')}}">ร้าน <span class="badge @if(Auth::user()->getshopcount()>0) progress-bar-success @endif">shop count</span></a></li>
+
+          <li>
+        image
+              <img class="profile-icon" src="" />
+
+
+            </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+
+          Uttapong Ruangrit<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="useredit',array(Auth::user()->id)) }}"><span class="glyphicon glyphicon-edit"></span> แก้ไขข้อมูลส่วนตัว</a></li>
+              <li><a href="shop',Auth::user()->username ) }}"><i class="fa fa-coffee"></i> ร้านค้าของคุณ</a></li>
+              <li class="divider"></li>
+              <li><a href="{{route('logout')}}">ออกจากระบบ</a></li>
+            </ul>
+          </li>
+
+        <div class='notauthened'>
+        <a href='{{ action('UserController@login'); }}' class='btn btn-info btn-xs' >เข้าสู่ระบบ</a>
+      <button onclick="loginFB();" class='btn btn-primary btn-xs' ><i class="fa fa-facebook-square fa-lg"></i> Facebook Signin</button>
+      <button onclick='window.location.href="{{ action('UserController@signup'); }}"' class="btn btn-success btn-xs"><span class="glyphicon glyphicon-user"></span> สมัครสมาชิก</button>
+        </div>
+
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+          </div>
+      </div>
+    <div class="container">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=612396988819496&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<%- body %>
+      <footer class="footer">
+        <p>&copy; Copyright, Siamplant.com 2015</p>
+      </footer>
+
+    </div> <!-- /container -->
+
 
 
 
@@ -89,9 +303,26 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/js/lib/jquery.min.js"></script>
     <script src="/js/build/main.js"></script>
     <script src="/js/build/specs.js"></script>
     <script src="/js/build/vendors.js"></script>
+    <script src="/js/lib/alert.js"></script>
+    <script src="/js/lib/bootbox.min.js"></script>
+    <script src="/js/lib/bootstrap-datepicker.js"></script>
+    <script src="/js/lib/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/lib/bootstrap-formhelpers.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/controller.js"></script>
+    <script src="/js/lib/dropzone.js"></script>
+    <script src="/js/lib/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/lib/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/lib/isotope.pkgd.min.js"></script>
+    <script src="/js/lib/jquery-ui.min.js"></script>
+    <script src="/js/lib/jquery.countdown.min.js"></script>
+    <script src="/js/lib/jquery.md5.js"></script>
+    <script src="/js/lib/jquery.wookmark.min.js"></script>
+    <script src="/js/lib/packery.pkgd.min.js"></script>
     <!--SCRIPTS END-->
 
   </body>
